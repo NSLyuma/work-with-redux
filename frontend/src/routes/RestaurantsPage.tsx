@@ -1,14 +1,17 @@
-import { useContext, useEffect } from 'react';
-import RestContext from '../contexts/RestContext';
+import { useEffect } from 'react';
 import {
   RestaurantAction,
   RestaurantItem,
 } from '../features/restaurants/restTypes';
 import { Link } from 'react-router-dom';
 import { mockRestaurants } from '../features/restaurants/restReducer';
+import { RootState } from '../store/rootReducer';
+import { useSelector, useDispatch } from 'react-redux';
 
 function RestaurantsPage(): JSX.Element {
-  const { restaurants, dispatch } = useContext(RestContext);
+  const restaurants = useSelector((state: RootState) => state.restaurants);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const action: RestaurantAction = {
       type: 'GET_RESTS',
@@ -21,13 +24,15 @@ function RestaurantsPage(): JSX.Element {
     <div>
       <h1>Restaurants</h1>
       <ul>
-        {restaurants.list.map((rest: RestaurantItem) => (
-          <li key={rest.id}>
-            <h3>{rest.title}</h3>
-            <p>{rest.description}</p>
-            <Link to={`/restaurants/${rest.id}`}>Details</Link>
-          </li>
-        ))}
+        {restaurants.list.map(
+          (rest: RestaurantItem): JSX.Element => (
+            <li key={rest.id}>
+              <h3>{rest.title}</h3>
+              <p>{rest.description}</p>
+              <Link to={`/restaurants/${rest.id}`}>Details</Link>
+            </li>
+          ),
+        )}
       </ul>
     </div>
   );

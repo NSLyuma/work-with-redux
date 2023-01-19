@@ -1,21 +1,23 @@
-import UserContext from '../contexts/UserContext';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { UserAction, UserComment } from '../types/userTypes';
-import { mockUsers } from '../reducers/userReducer';
-import { useSelector } from 'react-redux';
+import { UserAction, UserComment } from '../features/users/userTypes';
+import { mockUsers } from '../features/users/userReducer';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/rootReducer';
+import { RestaurantItem } from '../features/restaurants/restTypes';
 
 function RestaurantItemPage(): JSX.Element {
   const [textareaValue, setTextareaValue] = useState('');
-  // const { restaurants } = useContext(RestContext);
   const { id } = useParams();
   const rest = useSelector((state: RootState) =>
-    state.restaurants.list.find((item) => item.id === Number(id)),
+    state.restaurants.list.find(
+      (item: RestaurantItem): boolean => item.id === Number(id),
+    ),
   );
-  // const rest = restaurants.list.find((item) => item.id === Number(id));
 
-  const { users, dispatch } = useContext(UserContext);
+  const users = useSelector((state: RootState) => state.users);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const action: UserAction = {
@@ -37,7 +39,15 @@ function RestaurantItemPage(): JSX.Element {
       authorId: 1,
       restId: rest?.id,
     };
-    const action: UserAction = { type: 'ADD_COMMENT', payload: newComment };
+
+    const userComments = [...users.userList[0].comments, newComment];
+
+    const updatedUser = {
+      id: 1,
+      name: 'Current user name',
+      comments: userComments,
+    };
+    const action: UserAction = { type: 'ADD_COMMENT', payload: updatedUser };
     dispatch(action);
   };
 

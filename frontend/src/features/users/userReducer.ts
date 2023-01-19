@@ -1,4 +1,4 @@
-import { User, UserAction, UserComment, UsersState } from '../types/userTypes';
+import { User, UserAction, UserComment, UsersState } from './userTypes';
 
 export const mockComments1: UserComment[] = [
   {
@@ -69,12 +69,20 @@ export const mockUsers: User[] = [
   },
 ];
 
-export const initUserState: UsersState = { userList: [] };
+export const initUserState: UsersState = { userList: [], error: null };
 
-function userReducer(state: UsersState, action: UserAction): UsersState {
+function userReducer(
+  state: UsersState = initUserState,
+  action: UserAction,
+): UsersState {
   switch (action.type) {
     case 'GET_USERS':
       return { ...state, userList: action.payload };
+    case 'ADD_COMMENT':
+      return {
+        ...state,
+        userList: [...state.userList, action.payload],
+      };
     default:
       return state;
   }

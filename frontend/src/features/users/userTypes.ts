@@ -1,4 +1,4 @@
-import { RestaurantId } from '../features/restaurants/restTypes';
+import { RestaurantId } from '../restaurants/restTypes';
 
 export type UserId = number;
 
@@ -20,6 +20,7 @@ export type UserComment = {
 
 export type UsersState = {
   userList: User[];
+  error: Error | null;
 };
 
 export type UserAction =
@@ -27,4 +28,4 @@ export type UserAction =
       type: 'GET_USERS';
       payload: User[];
     }
-  | { type: 'ADD_COMMENT'; payload: UserComment };
+  | { type: 'ADD_COMMENT'; payload: User };

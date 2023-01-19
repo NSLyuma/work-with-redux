@@ -1,19 +1,23 @@
-import { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Navigate } from 'react-router-dom';
-import RestContext from '../contexts/RestContext';
 import {
   RestaurantAction,
   RestaurantDesc,
   RestaurantItem,
   RestaurantTitle,
 } from '../features/restaurants/restTypes';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../store/rootReducer';
 
 function RestaurantEditPage(): JSX.Element {
-  const { restaurants, dispatch } = useContext(RestContext);
   const { id } = useParams();
-  const rest = restaurants.list.find(
-    (item: RestaurantItem): boolean => item.id === Number(id),
+  const rest = useSelector((state: RootState) =>
+    state.restaurants.list.find(
+      (item: RestaurantItem): boolean => item.id === Number(id),
+    ),
   );
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -31,7 +35,7 @@ function RestaurantEditPage(): JSX.Element {
     return <Navigate to="/restaurants" />;
   }
 
-  const editRestaurant = () => {
+  const editRestaurant = (): void => {
     const editedRest: RestaurantItem = {
       id: rest?.id,
       title: inputValue,
@@ -41,13 +45,15 @@ function RestaurantEditPage(): JSX.Element {
     dispatch(action);
   };
 
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTitleChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     setInputValue(event.target.value);
   };
 
   const handleTextareaChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
+  ): void => {
     setTextareaValue(event.target.value);
   };
 
@@ -65,7 +71,7 @@ function RestaurantEditPage(): JSX.Element {
         value={textareaValue}
       />
       <button onClick={editRestaurant}>Save</button>
-      <button onClick={() => navigate(-1)}>&larr; Back</button>
+      <button onClick={(): void => navigate(-1)}>&larr; Back</button>
     </div>
   );
 }
