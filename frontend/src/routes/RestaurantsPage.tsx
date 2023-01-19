@@ -1,8 +1,11 @@
 import { useContext, useEffect } from 'react';
 import RestContext from '../contexts/RestContext';
-import { RestaurantAction, RestaurantItem } from '../types/restTypes';
+import {
+  RestaurantAction,
+  RestaurantItem,
+} from '../features/restaurants/restTypes';
 import { Link } from 'react-router-dom';
-import { mockRestaurants } from '../reducers/restReducer';
+import { mockRestaurants } from '../features/restaurants/restReducer';
 
 function RestaurantsPage(): JSX.Element {
   const { restaurants, dispatch } = useContext(RestContext);

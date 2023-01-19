@@ -10,35 +10,41 @@ import RestContext from './contexts/RestContext';
 import UserContext from './contexts/UserContext';
 import RestaurantEditPage from './routes/RestaurantEditPage';
 import RestaurantItemPage from './routes/RestaurantItemPage';
-import restaurantsReducer, { initState } from './reducers/restReducer';
+import restaurantsReducer, {
+  initState,
+} from './features/restaurants/restReducer';
 import userReducer, { initUserState } from './reducers/userReducer';
+import { Provider } from 'react-redux';
+import store from './store';
 
 function App(): JSX.Element {
   const [state, dispatch] = useReducer(restaurantsReducer, initState);
 
   const [userState, userDispatch] = useReducer(userReducer, initUserState);
   return (
-    <RestContext.Provider value={{ restaurants: state, dispatch }}>
-      <UserContext.Provider
-        value={{ users: userState, dispatch: userDispatch }}
-      >
-        <BrowserRouter>
-          <Navigation />
+    <Provider store={store}>
+      <RestContext.Provider value={{ restaurants: state, dispatch }}>
+        <UserContext.Provider
+          value={{ users: userState, dispatch: userDispatch }}
+        >
+          <BrowserRouter>
+            <Navigation />
 
-          <Routes>
-            <Route path="/" element={<h1>HOME</h1>} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/info" element={<InfoPage />} />
-            <Route path="/restaurants" element={<RestaurantsPage />} />
-            <Route path="/restaurants/:id" element={<RestaurantItemPage />} />
-            <Route
-              path="/restaurants/:id/edit"
-              element={<RestaurantEditPage />}
-            />
-          </Routes>
-        </BrowserRouter>
-      </UserContext.Provider>
-    </RestContext.Provider>
+            <Routes>
+              <Route path="/" element={<h1>HOME</h1>} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/info" element={<InfoPage />} />
+              <Route path="/restaurants" element={<RestaurantsPage />} />
+              <Route path="/restaurants/:id" element={<RestaurantItemPage />} />
+              <Route
+                path="/restaurants/:id/edit"
+                element={<RestaurantEditPage />}
+              />
+            </Routes>
+          </BrowserRouter>
+        </UserContext.Provider>
+      </RestContext.Provider>
+    </Provider>
   );
 }
 

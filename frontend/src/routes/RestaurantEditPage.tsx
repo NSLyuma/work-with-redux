@@ -6,7 +6,7 @@ import {
   RestaurantDesc,
   RestaurantItem,
   RestaurantTitle,
-} from '../types/restTypes';
+} from '../features/restaurants/restTypes';
 
 function RestaurantEditPage(): JSX.Element {
   const { restaurants, dispatch } = useContext(RestContext);

@@ -1,17 +1,22 @@
-import RestContext from '../contexts/RestContext';
 import UserContext from '../contexts/UserContext';
 import { useContext, useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, Navigate } from 'react-router-dom';
 import { UserAction, UserComment } from '../types/userTypes';
 import { mockUsers } from '../reducers/userReducer';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/rootReducer';
 
 function RestaurantItemPage(): JSX.Element {
   const [textareaValue, setTextareaValue] = useState('');
-  const { restaurants } = useContext(RestContext);
+  // const { restaurants } = useContext(RestContext);
   const { id } = useParams();
-  const rest = restaurants.list.find((item) => item.id === Number(id));
+  const rest = useSelector((state: RootState) =>
+    state.restaurants.list.find((item) => item.id === Number(id)),
+  );
+  // const rest = restaurants.list.find((item) => item.id === Number(id));
 
   const { users, dispatch } = useContext(UserContext);
+
   useEffect(() => {
     const action: UserAction = {
       type: 'GET_USERS',
@@ -20,7 +25,11 @@ function RestaurantItemPage(): JSX.Element {
     dispatch(action);
   }, [dispatch]);
 
-  const addComment = () => {
+  if (!rest) {
+    return <Navigate to="/restaurants" />;
+  }
+
+  const addComment = (): void => {
     const newComment: UserComment = {
       id: Math.floor(performance.now()),
       author: 'Current user',
@@ -34,7 +43,7 @@ function RestaurantItemPage(): JSX.Element {
 
   const handleTextareaChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
+  ): void => {
     setTextareaValue(event.target.value);
   };
 

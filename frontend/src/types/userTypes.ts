@@ -1,4 +1,4 @@
-import { RestaurantId } from './restTypes';
+import { RestaurantId } from '../features/restaurants/restTypes';
 
 export type UserId = number;
 

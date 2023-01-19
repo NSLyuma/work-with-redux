@@ -1,8 +1,4 @@
-import {
-  RestaurantAction,
-  RestaurantItem,
-  RestaurantState,
-} from '../types/restTypes';
+import { RestaurantAction, RestaurantItem, RestaurantState } from './restTypes';
 
 export const mockRestaurants: RestaurantItem[] = [
   { id: 1, title: 'Res1', description: 'Desc1' },
@@ -12,10 +8,10 @@ export const mockRestaurants: RestaurantItem[] = [
   { id: 5, title: 'Res5', description: 'Desc5' },
 ];
 
-export const initState: RestaurantState = { list: [] };
+export const initState: RestaurantState = { list: [], error: null };
 
 function restReducer(
-  state: RestaurantState,
+  state: RestaurantState = initState,
   action: RestaurantAction,
 ): RestaurantState {
   switch (action.type) {

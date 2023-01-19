@@ -1,6 +1,9 @@
 import { createContext } from 'react';
-import { initState } from '../reducers/restReducer';
-import { RestaurantState, RestaurantAction } from '../types/restTypes';
+import { initState } from '../features/restaurants/restReducer';
+import {
+  RestaurantState,
+  RestaurantAction,
+} from '../features/restaurants/restTypes';
 
 export type RestState = {
   restaurants: RestaurantState;

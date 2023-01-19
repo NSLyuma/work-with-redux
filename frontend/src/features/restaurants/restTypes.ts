@@ -12,6 +12,7 @@ export type RestaurantItem = {
 
 export type RestaurantState = {
   list: RestaurantItem[];
+  error: Error | null;
 };
 
 export type RestaurantAction =
